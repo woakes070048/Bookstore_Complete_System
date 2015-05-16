@@ -13,4 +13,14 @@ var userSchema = mongoose.Schema({
 
 User = mongoose.model('User', userSchema);
 
+exports.getUserByEmail = function (email, callback) {
+  User.find({email: email}, callback);
+};
+
+exports.registerUser = function (email, password, address, name, callback) {
+  var user = new User({name: name, address: address, email: email, password: password, isAdmin: false});
+
+  user.save(callback);
+};
+
 exports.userModel = User;
