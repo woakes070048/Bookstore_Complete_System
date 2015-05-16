@@ -1,7 +1,7 @@
 var userController = require('../controllers/userController.js');
 var orderController = require('../controllers/orderController.js');
 
-exports.listen = function(app) {
+exports.listen = function (app) {
     // Index
     app.get('/', function (req, res) {
         res.render('index');
@@ -31,7 +31,7 @@ exports.listen = function(app) {
         }
     });
 
-    app.post('/register', function(req, res) {
+    app.post('/register', function (req, res) {
         if (req.body.email != "" && req.body.password != "" && req.body.address != "" && req.body.name != "") {
             userController.register(req.body.email, req.body.password, req.body.address, req.body.name, res);
         } else {

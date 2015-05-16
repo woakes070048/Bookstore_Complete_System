@@ -20,8 +20,8 @@ exports.login = function (email, password, session, res) {
     });
 };
 
-exports.register = function(email, password, address, name, res) {
-    models.userModel.getUserByEmail(email, function(err, user) {
+exports.register = function (email, password, address, name, res) {
+    models.userModel.getUserByEmail(email, function (err, user) {
         if (err) {
             return res.status(400).json({error: "Error in database"});
         }
