@@ -38,6 +38,19 @@ exports.listen = function (app) {
         }
     });
 
+    app.post('/put-order', function(req, res) {
+        var session = req.session;
+        if (session.email != undefined) {
+            if (req.name != "" && req.address != "" && req.email != "" && req.title != "" && req.ISBN != "" && req.price != "" && req.quantity != "") {
+                orderController.placeOrder(req.name, req.address, req.email, req.title, req.ISBN, req.price, req.quantity, res);
+            } else {
+                return res.statusCode(400).json({error: "Please fill all fields"});
+            }
+        } else {
+            res.render('login');
+        }
+    });
+
     app.post('/login', function (req, res) {
 
         if (req.body.email != "" && req.body.password != "") {

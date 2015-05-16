@@ -22,4 +22,8 @@ var orderSchema = mongoose.Schema({
 
 var Order = mongoose.model('Order', orderSchema);
 
+Order.addOrder = function(name, address, email, title, ISBN, price, quantity, date, total, orderState, callback) {
+    //Order
+};
+
 exports.orderModel = Order;

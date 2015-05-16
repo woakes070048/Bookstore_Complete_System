@@ -111,4 +111,8 @@ Book.getBooks = function(callback) {
     Book.find(callback);
 };
 
+Book.getBookByISBN = function(ISBN, callback) {
+    Book.find({ISBN: ISBN}, callback);
+}
+
 exports.bookModel = Book;
