@@ -15,21 +15,25 @@ var bookSchema = mongoose.Schema({
 });
 
 var Book = mongoose.model('Book', bookSchema);
+var resetBooks = false;
 
-if(false) {
-    Book.find().remove((function (err, res) {
-        book1 = new Book({
+if (resetBooks) {
+    Book.find().remove((function (err) {
+        if(err) {
+            console.log("Error deleting books");
+        }
+        var book1 = new Book({
             title: "The Girl on the Train",
             author: "Paula Hawkins",
             publisher: "Doubleday",
-            ISBN: 0857522310,
+            ISBN: "0857522310",
             language: "English",
             nPages: 320,
             price: 6.00,
             stock: 13
         });
         book1.save();
-        book2 = new Book({
+        var book2 = new Book({
             title: "The Art Therapy Colouring Book",
             author: "Richard Merritt",
             publisher: "Michael O'Mara Books Ltd",
@@ -40,44 +44,44 @@ if(false) {
             stock: 6
         });
         book2.save();
-        book3 = new Book({
+        var book3 = new Book({
             title: "The Art of Eating Well ",
             author: "Jasmine Hemsley",
             publisher: "Ebury Press",
-            ISBN: 0091958326,
+            ISBN: "0091958326",
             language: "English",
             nPages: 320,
             price: 11.75,
             stock: 5
         });
         book3.save();
-        book4 = new Book({
+        var book4 = new Book({
             title: "The Shepherd's Life: A Tale of the Lake District",
             author: "James Rebanks",
             publisher: "Allen Lane",
-            ISBN: 1846148545,
+            ISBN: "1846148545",
             language: "English",
             nPages: 320,
             price: 6.99,
             stock: 2
         });
         book4.save();
-        book5 = new Book({
+        var book5 = new Book({
             title: "The Wine Diet",
             author: "Professor Roger Corder PhD",
             publisher: "Sphere",
-            ISBN: 0751542016,
+            ISBN: "0751542016",
             language: "English",
             nPages: 336,
             price: 10.99,
             stock: 32
         });
         book5.save();
-        book6 = new Book({
+        var book6 = new Book({
             title: "The Hobbit",
             author: "J. R. R. Tolkien",
             publisher: "HarperCollinsChildren'sBooks",
-            ISBN: 0007458428,
+            ISBN: "0007458428",
             language: "English",
             nPages: 368,
             price: 3.50,
@@ -102,7 +106,6 @@ if(false) {
         });
     }));
 }
-
 
 
 exports.bookModel = Book;
