@@ -103,6 +103,8 @@ if(false) {
     }));
 }
 
-
+Book.getBooks = function(callback) {
+    Book.find(callback);
+};
 
 exports.bookModel = Book;

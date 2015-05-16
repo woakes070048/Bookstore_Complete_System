@@ -7,5 +7,5 @@ exports.getBooks = function (res) {
         }
 
         return res.status(200).json(books);
-    })
+    });
 };
