@@ -13,6 +13,8 @@ exports.login = function (email, password, session, res) {
         if (user[0].password == password) {
             session.email = email;
             session.password = password;
+            session.name = user[0].name;
+            session.address = user[0].address
             return res.status(200).json({sucess: "Ok"});
         } else {
             return res.status(400).json({error: "Invalid password"});
@@ -20,7 +22,7 @@ exports.login = function (email, password, session, res) {
     });
 };
 
-exports.register = function (email, password, address, name, res) {
+exports.register = function (email, password, address, name, session, res) {
     models.userModel.getUserByEmail(email, function (err, user) {
         if (err) {
             return res.status(400).json({error: "Error in database"});
@@ -38,7 +40,10 @@ exports.register = function (email, password, address, name, res) {
                 }
 
                 if (user.email === email) {
+                    session.email = email;
+                    session.password = password;
                     return res.status(200).json({sucess: "Ok"});
+
                 } else {
                     return res.status(400).json({error: "Invalid Fields"});
                 }

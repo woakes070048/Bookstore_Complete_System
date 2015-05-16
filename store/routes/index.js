@@ -4,7 +4,12 @@ var orderController = require('../controllers/orderController.js');
 exports.listen = function (app) {
     // Index
     app.get('/', function (req, res) {
-        res.render('index');
+        var session = req.session;
+        if (session.email != undefined) {
+            res.render('order');
+        } else {
+            res.render('login');
+        }
     });
 
 
@@ -17,14 +22,20 @@ exports.listen = function (app) {
     app.get('/order', function (req, res) {
         var session = req.session;
         if (session.email != undefined) {
-            res.render('order');
+            res.render('order', {email: session.email, name: session.name, address: session.address});
         } else {
             res.render('login');
         }
     });
 
     app.get('/data/books', function (req, res) {
-        orderController.getBooks(res);
+        var session = req.session;
+        if (session.email != undefined) {
+            orderController.getBooks(res);
+        }
+        else{
+            res.render('login');
+        }
     });
 
     app.post('/login', function (req, res) {
@@ -38,7 +49,7 @@ exports.listen = function (app) {
 
     app.post('/register', function (req, res) {
         if (req.body.email != "" && req.body.password != "" && req.body.address != "" && req.body.name != "") {
-            userController.register(req.body.email, req.body.password, req.body.address, req.body.name, res);
+            userController.register(req.body.email, req.body.password, req.body.address, req.body.name, req.session, res);
         } else {
             res.status(400).json({error: 'Please fill all fields'});
         }

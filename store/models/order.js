@@ -11,9 +11,6 @@ var orderSchema = mongoose.Schema({
     },
     book: {
         title: String,
-        author: String,
-        edition: String,
-        publisher: Date,
         ISBN: String,
         price: Number
     },
