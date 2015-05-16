@@ -1,20 +1,39 @@
 'use strict';
-var app = angular.module('app',[]);
+var app = angular.module('app', []);
 
-app.controller('LoginController', ['$scope', '$http', function($scope, $http) {
-    $scope.username = "";
+app.controller('LoginController', ['$scope', '$http', function ($scope, $http) {
+    $scope.email = "";
     $scope.password = "";
     $scope.signIn = function () {
-        console.log($scope.username);
-        console.log($scope.password);
-
-        $http.post('/login', {username: $scope.username, password: $scope.password}).
+        $http.post('/login', {email: $scope.email, password: $scope.password}).
             success(function (data, status, headers, config) {
-            console.log("pintou");
+                console.log("pintou");
                 console.log(data);
+            }).
+            error(function (data, status, headers, config) {
+                console.log(data);
+            });
+    }
+}]);
+
+app.controller('RegisterController', ['$scope', '$http', function ($scope, $http) {
+    $scope.email = "";
+    $scope.password = "";
+    $scope.name = "";
+    $scope.address = "";
+    $scope.register = function () {
+        $http.post('/register', {
+            email: $scope.email,
+            password: $scope.password,
+            address: $scope.address,
+            name: $scope.name
         }).
-        error(function (data, status, headers, config) {
-            console.log("merdou");
-        });
+            success(function (data, status, headers, config) {
+                console.log("pintou");
+                console.log(data);
+            }).
+            error(function (data, status, headers, config) {
+                console.log("merdou");
+            });
     }
 }]);

@@ -4,9 +4,9 @@
 // Logic here is to keep a good reference of what's used
 
 // models
-Book = require('./blog');
-User = require('./user');
-Order = require('./order');
+var Book = require('./book');
+var User = require('./user');
+var Order = require('./order');
 
 // exports
 exports.bookModel = Book.bookModel;

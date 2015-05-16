@@ -1,7 +1,7 @@
 /**
  * Created by Vinnie on 14/05/2015.
  */
-exports.mongoose = require('mongoose');
+mongoose = require('mongoose');
 
 var orderSchema = mongoose.Schema({
     user: {
@@ -23,6 +23,6 @@ var orderSchema = mongoose.Schema({
     orderState: String
 });
 
-Order = mongoose.model('Order', orderSchema);
+var Order = mongoose.model('Order', orderSchema);
 
 exports.orderModel = Order;

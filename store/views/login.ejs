@@ -20,7 +20,8 @@
                         <img class="profile-img" src="http://bekerov.ru/projects/entercloud.ru/img/lock.png "
                              alt="">
                         <form ng-controller="LoginController" class="form-signin" action="" method="">
-                            <input type="text" class="form-control" placeholder="Username" ng-model="username" required autofocus>
+                            <input type="text" class="form-control" placeholder="Email" ng-model="email" required
+                                   autofocus>
                             <input type="password" class="form-control" placeholder="Password" ng-model="password" required>
                             <input type="" class="btn btn-lg btn-default btn-block" ng-click="signIn()" value="Sign In" />
                         </form>
@@ -29,11 +30,15 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="register">
-                        <form class="form-signin" action="" method="">
-                            <input type="text" class="form-control" placeholder="User Name ..." required autofocus>
-                            <input type="email" class="form-control" placeholder="Emaill Address ..." required>
-                            <input type="password" class="form-control" placeholder="Password ..." required>
-                            <input type="submit" class="btn btn-lg btn-default btn-block" value="Sign Up" />
+                        <form ng-controller="RegisterController" class="form-signin" action="" method="">
+                            <input type="email" class="form-control" placeholder="Email Address ..."
+                                   ng-model="email" required>
+                            <input type="password" class="form-control" placeholder="Password ..." ng-model="password" required>
+                            <input type="text" class="form-control" placeholder="Full Name ..." ng-model="name"
+                                   required>
+                            <input type="text" class="form-control" placeholder="Address ..."
+                                   ng-model="address" required>
+                            <input type="" class="btn btn-lg btn-default btn-block" value="Sign Up" ng-click="register()"/>
                         </form>
                         <div id="tabs" data-tabs="tabs">
                             <p class="text-center"><a href="#login" data-toggle="tab">Have an Account?</a></p>

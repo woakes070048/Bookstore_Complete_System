@@ -1,4 +1,5 @@
 var userController = require('../controllers/userController.js');
+var orderController = require('../controllers/orderController.js');
 
 exports.listen = function(app) {
     // Index
@@ -12,9 +13,16 @@ exports.listen = function(app) {
         res.render('login');
     });
 
+    // User Routes
+    app.get('/order', function (req, res) {
+        res.render('order');
+    });
+
+    app.get('/data/books', function (req, res) {
+        orderController.getBooks(res);
+    });
+
     app.post('/login', function (req, res) {
-        console.log(req.body.email);
-        console.log(req.body.password);
 
         if (req.body.email != "" && req.body.password != "") {
             userController.login(req.body.email, req.body.password, req.session, res);
@@ -25,7 +33,7 @@ exports.listen = function(app) {
 
     app.post('/register', function(req, res) {
         if (req.body.email != "" && req.body.password != "" && req.body.address != "" && req.body.name != "") {
-            userController.register(req.body.email, req.body.password, req.body.address, req.body.name);
+            userController.register(req.body.email, req.body.password, req.body.address, req.body.name, res);
         } else {
             res.status(400).json({error: 'Please fill all fields'});
         }
