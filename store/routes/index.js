@@ -15,7 +15,12 @@ exports.listen = function (app) {
 
     // User Routes
     app.get('/order', function (req, res) {
-        res.render('order');
+        var session = req.session;
+        if (session.email != undefined) {
+            res.render('order');
+        } else {
+            res.render('login');
+        }
     });
 
     app.get('/data/books', function (req, res) {
