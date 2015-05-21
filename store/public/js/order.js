@@ -29,6 +29,15 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
 
         });
 
+    $http.get('/user/data').
+        success(function (data, status, headers, config) {
+            $scope.user = data;
+            console.log($scope.user);
+        }).
+        error(function (data, status, headers, config) {
+
+        });
+
     $scope.updateOrder = function (title, price, ISBN) {
         $scope.title = title;
         $scope.price = price;
@@ -42,7 +51,7 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
     };
 
     $scope.placeOrder = function () {
-        $http.post("/put-order", {name: $scope.name , address: $scope.address , email: $scope.email ,
+        $http.post("/placeorder", {name: $scope.name , address: $scope.address , email: $scope.email ,
             title: $scope.title , ISBN: $scope.ISBN , price: $scope.price , quantity: $scope.quantity}).
             success(function (data, status, headers, config){
                 console.log(data);

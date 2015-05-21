@@ -11,10 +11,11 @@ exports.login = function (email, password, session, res) {
         }
 
         if (user[0].password == password) {
-            session.email = email;
+            session.email = user[0].email;
             session.password = password;
             session.name = user[0].name;
-            session.address = user[0].address
+            session.address = user[0].address;
+            console.log(session);
             return res.status(200).json({sucess: "Ok"});
         } else {
             return res.status(400).json({error: "Invalid password"});
@@ -42,6 +43,8 @@ exports.register = function (email, password, address, name, session, res) {
                 if (user.email === email) {
                     session.email = email;
                     session.password = password;
+                    session.name = user[0].name;
+                    session.address = user[0].address;
                     return res.status(200).json({sucess: "Ok"});
 
                 } else {

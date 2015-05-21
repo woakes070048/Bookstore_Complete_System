@@ -22,7 +22,7 @@ exports.listen = function (app) {
     app.get('/order', function (req, res) {
         var session = req.session;
         if (session.email != undefined) {
-            res.render('order', {email: session.email, name: session.name, address: session.address});
+            res.render('order');
         } else {
             res.render('login');
         }
@@ -33,12 +33,19 @@ exports.listen = function (app) {
         if (session.email != undefined) {
             orderController.getBooks(res);
         }
-        else{
+        else {
             res.render('login');
         }
     });
 
-    app.post('/put-order', function(req, res) {
+    app.get('/user/data', function (req, res) {
+        var session = req.session;
+        if (session.email != undefined) {
+            res.status(200).json({email: session.email, name: session.name, address: session.address});
+        }
+    });
+
+    app.post('/placeorder', function (req, res) {
         var session = req.session;
         if (session.email != undefined) {
             if (req.name != "" && req.address != "" && req.email != "" && req.title != "" && req.ISBN != "" && req.price != "" && req.quantity != "") {

@@ -21,10 +21,20 @@ exports.placeOrder = function(name, address, mail, title, ISBN, price, quantity,
         }
 
         if (books[0].stock > quantity) {
-            //sell
-
+            processSale(name, address, mail, title, ISBN, price, quantity);
         } else {
-            //order
+            createOrder(name, address, mail, title, ISBN, price, quantity);
         }
     });
+};
+
+var processSale = function (name, address, mail, title, ISBN, price, quantity, res) {
+    //state: dispatch date(amanha)
+    //imprimir recibo
+};
+
+var createOrder = function (name, address, mail, title, ISBN, price, quantity, res) {
+    //mensagem para a queue com 10*(o que foi pedido)
+    //state: waiting expedition
+    //quando envia state: dispatch should occur at (depois de amanha)
 };

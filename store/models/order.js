@@ -22,8 +22,22 @@ var orderSchema = mongoose.Schema({
 
 var Order = mongoose.model('Order', orderSchema);
 
-Order.addOrder = function(name, address, email, title, ISBN, price, quantity, date, total, orderState, callback) {
-    //Order
+Order.addOrder = function (name, address, email, title, ISBN, price, quantity, date, total, orderState, callback) {
+    var order = new Order({
+        user: {name: name, address: address, email: email},
+        book: {title: title, ISBN: ISBN, price: price},
+        quantity: quantity, date: date, total: total, orderState: orderState
+    });
+
+    order.save(callback);
+};
+
+Order.getOrdersByUser = function(username, callback){
+    Order.find({user:{name: username}}, callback);
+};
+
+Order.getOrders = function( callback){
+    Order.find(callback);
 };
 
 exports.orderModel = Order;
