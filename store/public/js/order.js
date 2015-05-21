@@ -51,7 +51,8 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
     };
 
     $scope.placeOrder = function () {
-        $http.post("/placeorder", {name: $scope.name , address: $scope.address , email: $scope.email ,
+        console.log($scope.ISBN);
+        $http.post("/placeorder", {name: $scope.user.name , address: $scope.user.address , email: $scope.user.email ,
             title: $scope.title , ISBN: $scope.ISBN , price: $scope.price , quantity: $scope.quantity}).
             success(function (data, status, headers, config){
                 console.log(data);

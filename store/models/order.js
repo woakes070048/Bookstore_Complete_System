@@ -40,4 +40,12 @@ Order.getOrders = function( callback){
     Order.find(callback);
 };
 
+Order.getOrderByID = function (id, callback) {
+    Order.find({_id: id}, callback);
+};
+
+Order.updateOrderState = function(objectID, state, callback) {
+    Order.update({_id: objectID}, {$set: {orderState: state}}, callback);
+};
+
 exports.orderModel = Order;

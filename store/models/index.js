@@ -11,4 +11,4 @@ var Order = require('./order');
 // exports
 exports.bookModel = Book.bookModel;
 exports.userModel = User.userModel;
-exports.OrderModel = Order.orderModel;
+exports.orderModel = Order.orderModel;

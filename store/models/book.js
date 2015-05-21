@@ -113,6 +113,16 @@ Book.getBooks = function(callback) {
 
 Book.getBookByISBN = function(ISBN, callback) {
     Book.find({ISBN: ISBN}, callback);
-}
+};
+
+Book.removeStock = function(ISBN, stock, callback) {
+    Book.getBookByISBN(ISBN, function (err, books) {
+        if (err) {
+            console.log(err);
+        }
+
+        Book.update({ISBN: ISBN}, {$set: {stock: (books[0].stock - stock)}}, callback);
+    });
+};
 
 exports.bookModel = Book;

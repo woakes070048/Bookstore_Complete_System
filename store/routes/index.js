@@ -12,7 +12,6 @@ exports.listen = function (app) {
         }
     });
 
-
     // User Routes
     app.get('/login', function (req, res) {
         res.render('login');
@@ -48,10 +47,12 @@ exports.listen = function (app) {
     app.post('/placeorder', function (req, res) {
         var session = req.session;
         if (session.email != undefined) {
-            if (req.name != "" && req.address != "" && req.email != "" && req.title != "" && req.ISBN != "" && req.price != "" && req.quantity != "") {
-                orderController.placeOrder(req.name, req.address, req.email, req.title, req.ISBN, req.price, req.quantity, res);
+            console.log(req.body);
+            if (req.body.name != "" && req.body.address != "" && req.body.email != "" && req.body.title != "" && req.body.ISBN != "" && req.body.price != "" && req.body.quantity != "") {
+
+                orderController.placeOrder(req.body.name, req.body.address, req.body.email, req.body.title, req.body.ISBN, req.body.price, req.body.quantity, res);
             } else {
-                return res.statusCode(400).json({error: "Please fill all fields"});
+                return res.status(400).json({error: "Please fill all fields"});
             }
         } else {
             res.render('login');
