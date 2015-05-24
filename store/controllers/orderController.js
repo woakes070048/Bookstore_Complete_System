@@ -101,3 +101,13 @@ var createOrder = function (objectID, ISBN, quantity, state, res) {
         }
     });
 };
+
+exports.addStock = function(objectID, ISBN, quantity, res) {
+    models.stockModel.addStock(objectID, ISBN, quantity, function (err, stock) {
+        if (err) {
+            return res.status(400).json({error: "Database error" + err});
+        }
+
+        res.status(200).json({ok: "processed"});
+    })
+};

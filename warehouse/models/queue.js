@@ -18,4 +18,8 @@ Queue.getOrders = function (callback) {
     Queue.find(callback);
 };
 
+Queue.removeOrder = function (ISBN, quantity, callback) {
+    Queue.remove({ISBN : ISBN, quantity : quantity}, callback);
+};
+
 exports.queueModel = Queue;

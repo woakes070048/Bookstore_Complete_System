@@ -76,5 +76,9 @@ exports.listen = function (app) {
         }
     });
 
+    app.post('/receiveStock', function (req, res) {
+       orderController.addStock(req.body.objectID, req.body.ISBN, req.body.quantity, res);
+    });
+
     // Order Routes
 };

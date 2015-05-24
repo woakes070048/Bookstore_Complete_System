@@ -15,15 +15,6 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
         success(function (data, status, headers, config) {
             $scope.books = data;
 
-
-            /*$( '#table' ).searchable({
-             selector: 'tbody tr',
-             searchField   : '#search',
-             striped: true,
-             oddRow: { 'background-color': '#f5f5f5' },
-             evenRow: { 'background-color': '#fff' },
-             searchType: 'fuzzy'
-             });*/
         }).
         error(function (data, status, headers, config) {
 
@@ -47,7 +38,6 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
 
     $scope.updateTotal = function () {
         $scope.total = $scope.quantity * $scope.price;
-        console.log($scope.total);
     };
 
     $scope.placeOrder = function () {
