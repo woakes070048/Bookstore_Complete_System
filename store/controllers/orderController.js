@@ -27,8 +27,10 @@ exports.placeOrder = function(name, address, mail, title, ISBN, price, quantity,
                 var state = "Dispatched at " + (moment().add(1, 'days')).format();
                 console.log(state);
                 processSale(order._id, state, res);
-            } else {
-                createOrder(name, address, mail, title, ISBN, price, quantity);
+            } else if (order != undefined) {
+                var state = "Waiting expedition";
+                console.log(state);
+                createOrder(order._id, order.book.ISBN, order.quantity, state, res);
             }
         });
     });
@@ -71,8 +73,31 @@ var processSale = function (objectID, state, res) {
     });
 };
 
-var createOrder = function (name, address, mail, title, ISBN, price, quantity, res) {
+var createOrder = function (objectID, ISBN, quantity, state, res) {
     //mensagem para a queue com 10*(o que foi pedido)
     //state: waiting expedition
     //quando envia state: dispatch should occur at (depois de amanha)
+
+    models.orderModel.updateOrderState(objectID, state, function (err, order) {
+        if (err) {
+            return res.status(400).json({error: "Database error" + err});
+        }
+
+        console.log("updated");
+        if (order != undefined) {
+            console.log("order");
+            models.queueModel.pushOrder(objectID, ISBN, quantity*10, function (err, item) {
+                console.log("item");
+                if (err) {
+                    console.log(err);
+                    res.status(400).json({error: "Database error" + err});
+                }
+
+                if (item != undefined) {
+                    console.log("warehouse");
+                    console.log(item);
+                }
+            })
+        }
+    });
 };

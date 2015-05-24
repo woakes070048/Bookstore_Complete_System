@@ -7,8 +7,10 @@
 var Book = require('./book');
 var User = require('./user');
 var Order = require('./order');
+var Queue = require('./queue');
 
 // exports
 exports.bookModel = Book.bookModel;
 exports.userModel = User.userModel;
 exports.orderModel = Order.orderModel;
+exports.queueModel = Queue.queueModel;
