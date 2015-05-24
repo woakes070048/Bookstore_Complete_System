@@ -80,5 +80,18 @@ exports.listen = function (app) {
        orderController.addStock(req.body.objectID, req.body.ISBN, req.body.quantity, res);
     });
 
+    app.get('/stock', function (req, res) {
+        var session = req.session;
+        if (session.email != undefined) {
+            res.render('orderList');
+        } else {
+            res.render('login');
+        }
+    });
+
+    app.get('/data/stockList', function (req, res) {
+        orderController.getStock(res);
+    });
+
     // Order Routes
 };

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Page</title>
+    <script src="/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/js/angular.min.js" type="text/javascript"></script>
+    <link rel='stylesheet' href='/css/bootstrap.min.css'/>
+    <script src="/js/stock.js" type="text/javascript"></script>
+    <script src="//rawgithub.com/stidges/jquery-searchable/master/dist/jquery.searchable-1.0.0.min.js"></script>
+</head>
+<body ng-app="app">
+<div ng-controller="StockController">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1>{{user.email}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Books</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                <input type="search" id="search" value="" class="form-control"
+                       placeholder="Search using Fuzzy searching">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table" id="table">
+                    <thead>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Stock</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="order in orders">
+                        <td>{{order.ISBN}}</td>
+                        <td>{{order.quantity}}</td>
+                        <td>
+                            <button ng-click="updateOrder(order.ISBN, order.quantity)">Confirm Stock</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+</div>
+<br>
+
+<div class="panel panel-danger"></div>
+
+</body>
+</html>

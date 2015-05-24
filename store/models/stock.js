@@ -15,7 +15,7 @@ Stock.addStock = function (objectID, ISBN, quantity, callback) {
 };
 
 Stock.getStock = function (callback) {
-    Queue.find(callback);
+    Stock.find(callback);
 };
 
 exports.stockModel = Stock;

@@ -111,3 +111,17 @@ exports.addStock = function(objectID, ISBN, quantity, res) {
         res.status(200).json({ok: "processed"});
     })
 };
+
+exports.getStock = function (res) {
+    models.stockModel.getStock(function (err, stock) {
+        if (err) {
+            res.status(400).json({error: err});
+        }
+
+        if (stock != undefined) {
+            res.status(200).json(stock);
+        } else {
+            res.status(400).json({error: "No stock no fun"});
+        }
+    });
+};
