@@ -1,9 +1,26 @@
-var express = require('express');
-var router = express.Router();
+var orderController = require('../controllers/orderController.js');
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-    res.render('index', {title: 'Express'});
-});
+exports.listen = function (app) {
+    // Index
+    app.get('/', function (req, res) {
+            res.render('index');
+    });
 
-module.exports = router;
+    app.get('/data/unprocessedorders', function(req, res) {
+        orderController.getUnprocessedOrders(res);
+    });
+
+    app.get('/data/processedorders', function(req, res) {
+        orderController.getProcessedOrders(res);
+    });
+
+    app.post('/register', function (req, res) {
+        if (req.body.email != "" && req.body.password != "" && req.body.address != "" && req.body.name != "") {
+            userController.register(req.body.email, req.body.password, req.body.address, req.body.name, req.session, res);
+        } else {
+            res.status(400).json({error: 'Please fill all fields'});
+        }
+    });
+
+    // Order Routes
+};
