@@ -43,8 +43,8 @@ exports.register = function (email, password, address, name, session, res) {
                 if (user.email === email) {
                     session.email = email;
                     session.password = password;
-                    session.name = user[0].name;
-                    session.address = user[0].address;
+                    session.name = user.name;
+                    session.address = user.address;
                     return res.status(200).json({sucess: "Ok"});
 
                 } else {

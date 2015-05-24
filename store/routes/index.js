@@ -14,6 +14,7 @@ exports.listen = function (app) {
 
     // User Routes
     app.get('/login', function (req, res) {
+        req.session.destroy();
         res.render('login');
     });
 
@@ -82,8 +83,17 @@ exports.listen = function (app) {
 
     app.get('/stock', function (req, res) {
         var session = req.session;
+        if (session.email == "admin@a.a") {
+            res.render('orderList', {email: "Admin"});
+        } else {
+            res.render('login');
+        }
+    });
+
+    app.get('/ordersList', function (req, res) {
+        var session = req.session;
         if (session.email != undefined) {
-            res.render('orderList');
+            res.render('orderList', {email: session.email});
         } else {
             res.render('login');
         }
@@ -91,6 +101,10 @@ exports.listen = function (app) {
 
     app.get('/data/stockList', function (req, res) {
         orderController.getStock(res);
+    });
+
+    app.post('/data/orderList', function (req, res) {
+        orderController.getOrderList(req.body.email, res);
     });
 
     app.post('/update/stock', function (req, res) {

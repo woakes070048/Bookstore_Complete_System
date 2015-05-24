@@ -61,7 +61,9 @@ var processSale = function (objectID, state, res) {
                         console.log(updatedBook);
                     });
 
-                    return res.status(200).json({order: updatedOrder[0]});
+                    if (res != null) {
+                        return res.status(200).json({order: updatedOrder[0]});
+                    }
                 } else {
                     return res.status(400).json({error: "No updated order"});
                 }
@@ -131,14 +133,15 @@ exports.updateStock = function(ISBN, quantity, res) {
         if (err) {
             return res.status(400).json({error: "Database error" + err});
         }
-        models.orderModel.getWaitingExpedition(ISBN, function(err, antonio){
+        models.orderModel.getWaitingExpedition(ISBN, function(err, ordersToUpdate){
             if(err){
                 res.status(400).json({err: err});
             }
-            for(var order in antonio){
-                if(order.quantity <= quantity){
-                    var state = "Dispatched at " + (moment().add(2, 'days')).format();
-                    processSale(order._id, state, res);
+            for(var i in ordersToUpdate){
+                console.log(ordersToUpdate[i]);
+                if(ordersToUpdate[i].quantity <= quantity){
+                    var state = "Dispatch will occur " + (moment().add(2, 'days')).format();
+                    processSale(ordersToUpdate[i]._id, state, null);
                 } else {
                     break;
                 }
@@ -151,4 +154,18 @@ exports.updateStock = function(ISBN, quantity, res) {
             });
         });
     })
+};
+
+exports.getOrderList = function (email, res) {
+    models.orderModel.getOrdersByEmail(email, function(err, orders) {
+        if (err) {
+            res.status(400).json({error: "Database error:" + err});
+        }
+
+        if (orders != undefined) {
+            res.status(200).json(orders);
+        } else {
+            res.status(400).json({error: 'Ja nao deu'});
+        }
+    });
 };

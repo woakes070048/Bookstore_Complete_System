@@ -15,7 +15,13 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="page-header">
-                    <h1>{{user.email}}</h1>
+                    <h1><%= email%></h1>
+                    <a href="/order">
+                        <button class="btn btn-success">Order book</button>
+                    </a>
+                    <a href="/login">
+                        <button class="btn btn-success">Logout</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -25,14 +31,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-4 col-lg-offset-4">
-                <input type="search" id="search" value="" class="form-control"
-                       placeholder="Search using Fuzzy searching">
-            </div>
-        </div>
-        <div class="row">
             <div class="col-lg-12">
-                <table class="table" id="table">
+                <table ng-if='user.email == "admin@a.a"' class="table" id="table">
                     <thead>
                     <tr>
                         <th>ISBN</th>
@@ -46,6 +46,25 @@
                         <td>
                             <button ng-click="updateOrder(order.ISBN, order.quantity)">Confirm Stock</button>
                         </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <table ng-if='user.email != "admin@a.a"' class="table" id="table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>ISBN</th>
+                        <th>State</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="order in orders">
+                        <td>{{order.book.title}}</td>
+                        <td>{{order.book.price}}</td>
+                        <td>{{order.book.ISBN}}</td>
+                        <td>{{order.orderState}}</td>
                     </tr>
                     </tbody>
                 </table>

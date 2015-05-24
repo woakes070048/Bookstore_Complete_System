@@ -36,6 +36,10 @@ Order.getOrdersByUser = function(username, callback){
     Order.find({user:{name: username}}, callback);
 };
 
+Order.getOrdersByEmail = function(email, callback){
+    Order.find({'user.email': email}, callback);
+};
+
 Order.getOrders = function( callback){
     Order.find(callback);
 };
@@ -49,7 +53,7 @@ Order.updateOrderState = function(objectID, state, callback) {
 };
 
 Order.getWaitingExpedition = function(ISBN, callback) {
-    Order.find({ISBN: ISBN, state: "Waiting expedition"}, callback);
-}
+    Order.find({'book.ISBN': ISBN, orderState: "Waiting expedition"}, callback);
+};
 
 exports.orderModel = Order;
