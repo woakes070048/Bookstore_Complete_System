@@ -125,3 +125,30 @@ exports.getStock = function (res) {
         }
     });
 };
+
+exports.updateStock = function(ISBN, quantity, res) {
+    models.bookModel.updateStock(ISBN, quantity, function (err, stock) {
+        if (err) {
+            return res.status(400).json({error: "Database error" + err});
+        }
+        models.orderModel.getWaitingExpedition(ISBN, function(err, antonio){
+            if(err){
+                res.status(400).json({err: err});
+            }
+            for(var order in antonio){
+                if(order.quantity <= quantity){
+                    var state = "Dispatched at " + (moment().add(2, 'days')).format();
+                    processSale(order._id, state, res);
+                } else {
+                    break;
+                }
+            }
+            models.stockModel.removeStock(ISBN, quantity, function(err, manuel){
+                if(err){
+                    res.status(400).json({err: err});
+                }
+                res.status(200).json({ok: "updated"});
+            });
+        });
+    })
+};

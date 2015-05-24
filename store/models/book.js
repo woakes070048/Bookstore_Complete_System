@@ -19,7 +19,7 @@ var resetBooks = false;
 
 if (resetBooks) {
     Book.find().remove((function (err) {
-        if(err) {
+        if (err) {
             console.log("Error deleting books");
         }
         var book1 = new Book({
@@ -107,21 +107,30 @@ if (resetBooks) {
     }));
 }
 
-Book.getBooks = function(callback) {
+Book.getBooks = function (callback) {
     Book.find(callback);
 };
 
-Book.getBookByISBN = function(ISBN, callback) {
+Book.getBookByISBN = function (ISBN, callback) {
     Book.find({ISBN: ISBN}, callback);
 };
 
-Book.removeStock = function(ISBN, stock, callback) {
+Book.removeStock = function (ISBN, stock, callback) {
     Book.getBookByISBN(ISBN, function (err, books) {
         if (err) {
             console.log(err);
         }
 
         Book.update({ISBN: ISBN}, {$set: {stock: (books[0].stock - stock)}}, callback);
+    });
+};
+
+Book.updateStock = function (ISBN, quantity, callback) {
+    Book.getBookByISBN(ISBN, function (err, books) {
+        if (err) {
+            console.log(err);
+        }
+        Book.update({ISBN: ISBN}, {$set: {stock: books[0].stock + parseInt(quantity)}}, callback);
     });
 };
 

@@ -93,5 +93,10 @@ exports.listen = function (app) {
         orderController.getStock(res);
     });
 
+    app.post('/update/stock', function (req, res) {
+        console.log(req.body.quantity);
+        orderController.updateStock(req.body.ISBN, req.body.quantity, res);
+    });
+
     // Order Routes
 };

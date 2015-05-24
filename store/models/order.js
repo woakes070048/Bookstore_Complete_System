@@ -48,4 +48,8 @@ Order.updateOrderState = function(objectID, state, callback) {
     Order.update({_id: objectID}, {$set: {orderState: state}}, callback);
 };
 
+Order.getWaitingExpedition = function(ISBN, callback) {
+    Order.find({ISBN: ISBN, state: "Waiting expedition"}, callback);
+}
+
 exports.orderModel = Order;

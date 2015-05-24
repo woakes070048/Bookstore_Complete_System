@@ -18,5 +18,9 @@ Stock.getStock = function (callback) {
     Stock.find(callback);
 };
 
+Stock.removeStock = function(ISBN, quantity, callback) {
+    Stock.remove({ISBN: ISBN, quantity: quantity}, callback);
+};
+
 exports.stockModel = Stock;
 
