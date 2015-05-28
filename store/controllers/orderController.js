@@ -1,5 +1,7 @@
 var moment = require('moment');
 var models = require('../models/index.js');
+var nodemailer = require("nodemailer");
+
 
 exports.getBooks = function (res) {
     models.bookModel.getBooks(function (err, books) {
@@ -11,7 +13,7 @@ exports.getBooks = function (res) {
     });
 };
 
-exports.placeOrder = function(name, address, mail, title, ISBN, price, quantity, res) {
+exports.placeOrder = function(session, name, address, mail, title, ISBN, price, quantity, res) {
     models.bookModel.getBookByISBN(ISBN, function (err, books) {
         if (err) {
             return res.status(400).json({error: "Database error"} + err);
@@ -26,7 +28,7 @@ exports.placeOrder = function(name, address, mail, title, ISBN, price, quantity,
             if (books[0].stock > quantity && order != undefined) {
                 var state = "Dispatched at " + (moment().add(1, 'days')).format();
                 console.log(state);
-                processSale(order._id, state, res);
+                processSale(order._id, state, res, session);
             } else if (order != undefined) {
                 var state = "Waiting expedition";
                 console.log(state);
@@ -36,23 +38,52 @@ exports.placeOrder = function(name, address, mail, title, ISBN, price, quantity,
     });
 };
 
-var processSale = function (objectID, state, res) {
+function sendEmail(order, state, res) {
+
+    var transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+            user: 'hoardapp@gmail.com',
+            pass: 'hoardingisfun'
+        }
+    });
+
+    var mailOptions = {
+        from: 'BookStore ? <bookstore@gmail.com>', // sender address
+        to: order.user.email, // list of receivers
+        subject: 'Sales Receipt', // Subject line
+        text: "Texto",
+        html: '' // html body
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        console.log("Sending email"); 
+        if (error) {
+            return;
+        } else {
+            return;
+        }
+    });
+};
+
+var processSale = function (objectID, state, res, session) {
     //state: dispatch date(amanha)
     //imprimir recibo
+
+    console.log("############################################");
     models.orderModel.updateOrderState(objectID, state, function (err, order) {
         if (err) {
             return res.status(400).json({error: "Database error" + err});
         }
 
+
         if (order != undefined) {
-
-
             //TODO: send email/receipt
             models.orderModel.getOrderByID(objectID, function (err, updatedOrder) {
+
                 if (err) {
                     return res.status(400).json({error: "Database error" + err});
                 }
-
 
                 if (updatedOrder[0] != undefined) {
 
@@ -62,6 +93,19 @@ var processSale = function (objectID, state, res) {
                     });
 
                     if (res != null) {
+                        if(session.email=="admin@a.a"){
+                            //printReceipt(updatedOrder[0], state, res);
+                            /**************************************************************************************/
+                            /**************************************************************************************/
+                            /**************************************************************************************/
+                            /**************************************************************************************/
+                            /**************************************************************************************/
+                            /**************************************************************************************/
+                            /**************************************************************************************/
+                            /**************************************************************************************/
+                        }else {
+                            sendEmail(updatedOrder[0], state, res);
+                        }
                         return res.status(200).json({order: updatedOrder[0]});
                     }
                 } else {
@@ -129,6 +173,7 @@ exports.getStock = function (res) {
 };
 
 exports.updateStock = function(ISBN, quantity, res) {
+    console.log("FEZ UPDATE STOCK");
     models.bookModel.updateStock(ISBN, quantity, function (err, stock) {
         if (err) {
             return res.status(400).json({error: "Database error" + err});

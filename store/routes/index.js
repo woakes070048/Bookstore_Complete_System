@@ -51,7 +51,7 @@ exports.listen = function (app) {
             console.log(req.body);
             if (req.body.name != "" && req.body.address != "" && req.body.email != "" && req.body.title != "" && req.body.ISBN != "" && req.body.price != "" && req.body.quantity != "") {
 
-                orderController.placeOrder(req.body.name, req.body.address, req.body.email, req.body.title, req.body.ISBN, req.body.price, req.body.quantity, res);
+                orderController.placeOrder(session, req.body.name, req.body.address, req.body.email, req.body.title, req.body.ISBN, req.body.price, req.body.quantity, res);
             } else {
                 return res.status(400).json({error: "Please fill all fields"});
             }
