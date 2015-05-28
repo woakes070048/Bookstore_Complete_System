@@ -13,7 +13,7 @@ exports.getBooks = function (res) {
     });
 };
 
-exports.placeOrder = function(session, name, address, mail, title, ISBN, price, quantity, res) {
+exports.placeOrder = function(session, name, address, mail, title, ISBN, price, quantity, admin, res) {
     models.bookModel.getBookByISBN(ISBN, function (err, books) {
         if (err) {
             return res.status(400).json({error: "Database error"} + err);
@@ -49,7 +49,7 @@ function sendEmail(order, state, res) {
     });
 
     var mailOptions = {
-        from: 'BookStore ? <bookstore@gmail.com>', // sender address
+        from: 'MIEICBooks <bookstore@gmail.com>', // sender address
         to: order.user.email, // list of receivers
         subject: 'Sales Receipt', // Subject line
         text: "Texto",

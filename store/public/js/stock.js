@@ -32,7 +32,6 @@ app.controller('StockController', ['$scope', '$http', function ($scope, $http) {
     $http.get('/user/data').
         success(function (data, status, headers, config) {
             $scope.user = data;
-            console.log($scope.user);
             updateLists();
         }).
         error(function (data, status, headers, config) {
