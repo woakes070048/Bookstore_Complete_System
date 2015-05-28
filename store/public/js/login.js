@@ -31,7 +31,6 @@ app.controller('RegisterController', ['$scope', '$http', '$window', function ($s
                 $window.location.href = '/order';
             }).
             error(function (data, status, headers, config) {
-                console.log("merdou");
             });
     }
 }]);

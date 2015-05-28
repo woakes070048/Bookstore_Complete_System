@@ -50,14 +50,12 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
     };
 
     $scope.placeOrder = function () {
-        console.log($scope.ISBN);
         $http.post("/placeorder", {
             name: $scope.user.name, address: $scope.user.address, email: $scope.user.email,
             title: $scope.title, ISBN: $scope.ISBN, price: $scope.price, quantity: $scope.quantity, admin: $scope.admin
         }).
             success(function (data, status, headers, config) {
                 window.open('/order', '_self');
-                console.log($scope.admin);
                 if ($scope.admin == "admin@a.a") {
                     var receiptWindow = window.open('', '_blank');
                     if (!receiptWindow) return false;
@@ -86,9 +84,9 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
                         '							<abbr title="Phone">P:</abbr> +351 22 508 14 00',
                         '							<br>',
                         '							<br>',
-                        '							<label>Client name:</label> ' + $scope.user.name,
+                        '							<strong>Client name:</strong> ' + $scope.user.name,
                         '							<br>',
-                        '							<label>Client address:</label> ' + $scope.user.address,
+                        '							<strong>Client address:</strong> ' + $scope.user.address,
                         '							<br>',
                         '						</address>',
                         '					</div>',
@@ -140,10 +138,8 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
                     ].join('');
                     receiptWindow.document.write(html);
                 }
-                console.log(data);
             }).
             error(function (data, status, headers, config) {
-                console.log(data);
             });
     };
 

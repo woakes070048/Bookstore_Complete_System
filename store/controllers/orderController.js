@@ -13,7 +13,7 @@ exports.getBooks = function (res) {
     });
 };
 
-exports.placeOrder = function(session, name, address, mail, title, ISBN, price, quantity, admin, res) {
+exports.placeOrder = function (session, name, address, mail, title, ISBN, price, quantity, admin, res) {
     models.bookModel.getBookByISBN(ISBN, function (err, books) {
         if (err) {
             return res.status(400).json({error: "Database error"} + err);
@@ -27,11 +27,9 @@ exports.placeOrder = function(session, name, address, mail, title, ISBN, price, 
             }
             if (books[0].stock > quantity && order != undefined) {
                 var state = "Dispatched at " + (moment().add(1, 'days')).format();
-                console.log(state);
                 processSale(order._id, state, res, session);
             } else if (order != undefined) {
                 var state = "Waiting expedition";
-                console.log(state);
                 createOrder(order._id, order.book.ISBN, order.quantity, state, res);
             }
         });
@@ -39,6 +37,86 @@ exports.placeOrder = function(session, name, address, mail, title, ISBN, price, 
 };
 
 function sendEmail(order, state, res) {
+    console.log(order);
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = mm + '/' + dd + '/' + yyyy;
+
+    var html = [
+        '	<div class="container">',
+        '		<div class="row">',
+        '			<div class="well col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">',
+        '				<div class="row">',
+        '					<div class="col-xs-6 col-sm-6 col-md-6">',
+        '							<strong>MIEICBooks</strong>',
+        '							<br>',
+        '							Rua Dr. Roberto Frias S/N',
+        '							<br>',
+        '							4200-465 Porto, Portugal',
+        '							<br>',
+        '							<abbr title="Phone">P:</abbr> +351 22 508 14 00',
+        '							<br>',
+        '							<br>',
+        '							<strong>Client name:</strong> ' + order.user.name,
+        '							<br>',
+        '							<strong>Client address:</strong> ' + order.user.address,
+        '							<br>',
+        '					</div>',
+        '					<div class="col-xs-6 col-sm-6 col-md-6 text-right">',
+        '						<p>',
+        '							<em>' + today + '</em>',
+        '						</p>',
+        '					</div>',
+        '				</div>',
+        '				<div class="row">',
+        '					<div class="text-center">',
+        '						<h1>Receipt</h1>',
+        '					</div>',
+        '				</span>',
+        '				<table class="table table-hover">',
+        '					<thead>',
+        '						<tr>',
+        '							<th>Product</th>',
+        '							<th>#</th>',
+        '							<th class="text-center">Price</th>',
+        '							<th class="text-center">Total</th>',
+        '						</tr>',
+        '					</thead>',
+        '					<tbody>',
+        '						<tr>',
+        '							<td class="col-md-9"><em>' + order.book.title + '</em></h4></td>',
+        '							<td class="col-md-1" style="text-align: center">' + order.quantity + '</td>',
+        '							<td class="col-md-1 text-center">' + order.book.price / order.quantity + '</td>',
+        '							<td class="col-md-1 text-center">' + order.book.price + '</td>',
+        '						</tr>',
+        '						<tr>',
+        '							<td></td>',
+        '							<td></td>',
+        '							<td class="text-right">',
+        '						</tr>',
+        '						<tr>',
+        '							<td></td>',
+        '							<td></td>',
+        '							<td class="text-right"><h4><strong>Total:</strong></h4></td>',
+        '							<td class="text-center text-danger"><h4><strong>' + order.book.price + '</strong></h4></td>',
+        '						</tr>',
+        '					</tbody>',
+        '				</table>',
+        '			</div>',
+        '		</div>',
+        '	</div>',
+    ].join('');
 
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -52,25 +130,21 @@ function sendEmail(order, state, res) {
         from: 'MIEICBooks <bookstore@gmail.com>', // sender address
         to: order.user.email, // list of receivers
         subject: 'Sales Receipt', // Subject line
-        text: "Texto",
-        html: '' // html body
+        text: "Here is your latest order's receipt!",
+        html: html
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
-        console.log("Sending email"); 
+        console.log("Sending email");
         if (error) {
-            return;
+            console.log("Falhou o mail");
         } else {
-            return;
+            console.log("Funcionou o mail");
         }
     });
 };
 
 var processSale = function (objectID, state, res, session) {
-    //state: dispatch date(amanha)
-    //imprimir recibo
-
-    console.log("############################################");
     models.orderModel.updateOrderState(objectID, state, function (err, order) {
         if (err) {
             return res.status(400).json({error: "Database error" + err});
@@ -86,28 +160,15 @@ var processSale = function (objectID, state, res, session) {
                 }
 
                 if (updatedOrder[0] != undefined) {
-
                     //update book stock
-                    models.bookModel.removeStock(updatedOrder[0].book.ISBN, updatedOrder[0].quantity, function(err, updatedBook) {
-                        console.log(updatedBook);
-                    });
-
-                    if (res != null) {
-                        if(session.email=="admin@a.a"){
-                            //printReceipt(updatedOrder[0], state, res);
-                            /**************************************************************************************/
-                            /**************************************************************************************/
-                            /**************************************************************************************/
-                            /**************************************************************************************/
-                            /**************************************************************************************/
-                            /**************************************************************************************/
-                            /**************************************************************************************/
-                            /**************************************************************************************/
-                        }else {
-                            sendEmail(updatedOrder[0], state, res);
+                    models.bookModel.removeStock(updatedOrder[0].book.ISBN, updatedOrder[0].quantity, function (err, updatedBook) {
+                        if (updatedBook != null) {
+                            console.log("Chegou aqui");
+                            if (session.email != "admin@a.a") {
+                                sendEmail(updatedOrder[0], state, res);
+                            }
                         }
-                        return res.status(200).json({order: updatedOrder[0]});
-                    }
+                    });
                 } else {
                     return res.status(400).json({error: "No updated order"});
                 }
@@ -129,26 +190,20 @@ var createOrder = function (objectID, ISBN, quantity, state, res) {
             return res.status(400).json({error: "Database error" + err});
         }
 
-        console.log("updated");
         if (order != undefined) {
-            console.log("order");
-            models.queueModel.pushOrder(objectID, ISBN, quantity*10, function (err, item) {
-                console.log("item");
+            models.queueModel.pushOrder(objectID, ISBN, quantity * 10, function (err, item) {
                 if (err) {
-                    console.log(err);
                     res.status(400).json({error: "Database error" + err});
                 }
-
                 if (item != undefined) {
-                    console.log("warehouse");
-                    console.log(item);
+                    res.status(200).json({success: "Success!"});
                 }
             })
         }
     });
 };
 
-exports.addStock = function(objectID, ISBN, quantity, res) {
+exports.addStock = function (objectID, ISBN, quantity, res) {
     models.stockModel.addStock(objectID, ISBN, quantity, function (err, stock) {
         if (err) {
             return res.status(400).json({error: "Database error" + err});
@@ -172,27 +227,25 @@ exports.getStock = function (res) {
     });
 };
 
-exports.updateStock = function(ISBN, quantity, res) {
-    console.log("FEZ UPDATE STOCK");
+exports.updateStock = function (ISBN, quantity, res) {
     models.bookModel.updateStock(ISBN, quantity, function (err, stock) {
         if (err) {
             return res.status(400).json({error: "Database error" + err});
         }
-        models.orderModel.getWaitingExpedition(ISBN, function(err, ordersToUpdate){
-            if(err){
+        models.orderModel.getWaitingExpedition(ISBN, function (err, ordersToUpdate) {
+            if (err) {
                 res.status(400).json({err: err});
             }
-            for(var i in ordersToUpdate){
-                console.log(ordersToUpdate[i]);
-                if(ordersToUpdate[i].quantity <= quantity){
+            for (var i in ordersToUpdate) {
+                if (ordersToUpdate[i].quantity <= quantity) {
                     var state = "Dispatch will occur " + (moment().add(2, 'days')).format();
                     processSale(ordersToUpdate[i]._id, state, null);
                 } else {
                     break;
                 }
             }
-            models.stockModel.removeStock(ISBN, quantity, function(err, manuel){
-                if(err){
+            models.stockModel.removeStock(ISBN, quantity, function (err, manuel) {
+                if (err) {
                     res.status(400).json({err: err});
                 }
                 res.status(200).json({ok: "updated"});
@@ -202,7 +255,7 @@ exports.updateStock = function(ISBN, quantity, res) {
 };
 
 exports.getOrderList = function (email, res) {
-    models.orderModel.getOrdersByEmail(email, function(err, orders) {
+    models.orderModel.getOrdersByEmail(email, function (err, orders) {
         if (err) {
             res.status(400).json({error: "Database error:" + err});
         }

@@ -15,7 +15,6 @@ exports.login = function (email, password, session, res) {
             session.password = password;
             session.name = user[0].name;
             session.address = user[0].address;
-            console.log(session);
             return res.status(200).json({sucess: "Ok"});
         } else {
             return res.status(400).json({error: "Invalid password"});
@@ -31,7 +30,6 @@ exports.register = function (email, password, address, name, session, res) {
 
         if (user.length == 0) {
             models.userModel.registerUser(email, password, address, name, function (err, user) {
-                console.log(user);
                 if (err) {
                     return res.status(400).json({error: "Error in database"});
                 }
