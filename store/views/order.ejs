@@ -17,11 +17,11 @@
                 <div class="col-lg-12">
                     <div class="page-header">
 
-                        <h1>{{user.email}}</h1>
-                        <a ng-if='user.email == "admin@a.a"' href="/stock">
+                        <h1 ng-if='admin != "admin@a.a"'>{{admin}}</h1>
+                        <a ng-if='admin == "admin@a.a"' href="/stock">
                             <button class="btn btn-success">Update Stock</button>
                         </a>
-                        <a ng-if='user.email != "admin@a.a"' href="/ordersList">
+                        <a ng-if='admin != "admin@a.a"' href="/ordersList">
                             <button class="btn btn-success">Orders List</button>
                         </a>
                         <a href="/login">
@@ -97,19 +97,22 @@
                         <div class='form-row'>
                             <div class='col-xs-12 form-group required'>
                                 <label class='control-label'>Name</label>
-                                <input class='form-control' size='4' type='text' ng-model="user.name">
+                                <input ng-if='admin != "admin@a.a"' class='form-control' size='4' type='text' ng-model="user.name" disabled>
+                                <input ng-if='admin == "admin@a.a"' class='form-control' size='4' type='text' ng-model="user.name">
                             </div>
                         </div>
                         <div class='form-row'>
                             <div class='col-xs-12 form-group card required'>
                                 <label class='control-label'>Address</label>
-                                <input class='form-control card-number' size='20' type='text' ng-model="user.address">
+                                <input ng-if='admin != "admin@a.a"' class='form-control card-number' size='20' type='text' ng-model="user.address" disabled>
+                                <input ng-if='admin == "admin@a.a"' class='form-control card-number' size='20' type='text' ng-model="user.address">
                             </div>
                         </div>
                         <div class='form-row'>
                             <div class='col-xs-12 form-group card required'>
                                 <label class='control-label'>Email</label>
-                                <input class='form-control' size='20' type='text' ng-model="user.email">
+                                <input ng-if='admin != "admin@a.a"' class='form-control' size='20' type='text' ng-model="user.email" disabled>
+                                <input ng-if='admin == "admin@a.a"' class='form-control' size='20' type='text' ng-model="user.email">
                                 <input ng-if='admin == "admin@a.a"' hidden ng-model="admin">
                             </div>
                         </div>
