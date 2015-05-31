@@ -144,6 +144,7 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
                     console.log("pop up");
                     receiptWindow.document.write(html);
                 }
+                location.reload();
             }).
             error(function (data, status, headers, config) {
             });

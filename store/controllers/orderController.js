@@ -142,6 +142,8 @@ function sendEmail(order, state, res) {
             console.log("Funcionou o mail");
         }
     });
+
+    res.status(200).json({ok:"processed"});
 };
 
 var processSale = function (objectID, state, res, session) {
