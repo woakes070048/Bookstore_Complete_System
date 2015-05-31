@@ -55,10 +55,15 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
             title: $scope.title, ISBN: $scope.ISBN, price: $scope.price, quantity: $scope.quantity, admin: $scope.admin
         }).
             success(function (data, status, headers, config) {
+                console.log("open");
                 window.open('/order', '_self');
                 if ($scope.admin == "admin@a.a") {
+                    console.log("admin");
                     var receiptWindow = window.open('', '_blank');
-                    if (!receiptWindow) return false;
+                    if (!receiptWindow) {
+                        console.log("nope");
+                        return false;
+                    }
                     var d = new Date();
                     var date = d.toString();
                     var html = [
@@ -136,6 +141,7 @@ app.controller('OrderTableController', ['$scope', '$http', function ($scope, $ht
                         '</div>',
                         '</body>'
                     ].join('');
+                    console.log("pop up");
                     receiptWindow.document.write(html);
                 }
             }).

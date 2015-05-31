@@ -51,7 +51,7 @@ exports.listen = function (app) {
             console.log(req.body);
             if (req.body.name != "" && req.body.address != "" && req.body.email != "" && req.body.title != "" && req.body.ISBN != "" && req.body.price != "" && req.body.quantity != "") {
                 orderController.placeOrder(session, req.body.name, req.body.address, req.body.email, req.body.title, req.body.ISBN, req.body.price, req.body.quantity, res);
-                return res.status(200).json({success:"success"});
+                //return res.status(200).json({success:"success"});
             } else {
                 return res.status(400).json({error: "Please fill all fields"});
             }
@@ -109,7 +109,8 @@ exports.listen = function (app) {
 
     app.post('/update/stock', function (req, res) {
         console.log(req.body.quantity);
-        orderController.updateStock(req.body.ISBN, req.body.quantity, res);
+        var session = req.session;
+        orderController.updateStock(req.body.ISBN, req.body.quantity, res, session);
     });
 
     // Order Routes

@@ -13,7 +13,7 @@ exports.getBooks = function (res) {
     });
 };
 
-exports.placeOrder = function (session, name, address, mail, title, ISBN, price, quantity, admin, res) {
+exports.placeOrder = function (session, name, address, mail, title, ISBN, price, quantity, res) {
     models.bookModel.getBookByISBN(ISBN, function (err, books) {
         if (err) {
             return res.status(400).json({error: "Database error"} + err);
@@ -166,6 +166,8 @@ var processSale = function (objectID, state, res, session) {
                             console.log("Chegou aqui");
                             if (session.email != "admin@a.a") {
                                 sendEmail(updatedOrder[0], state, res);
+                            } else {
+                                res.status(200).json({ok: "processed"});
                             }
                         }
                     });
@@ -227,7 +229,7 @@ exports.getStock = function (res) {
     });
 };
 
-exports.updateStock = function (ISBN, quantity, res) {
+exports.updateStock = function (ISBN, quantity, res, session) {
     models.bookModel.updateStock(ISBN, quantity, function (err, stock) {
         if (err) {
             return res.status(400).json({error: "Database error" + err});
@@ -239,7 +241,7 @@ exports.updateStock = function (ISBN, quantity, res) {
             for (var i in ordersToUpdate) {
                 if (ordersToUpdate[i].quantity <= quantity) {
                     var state = "Dispatch will occur " + (moment().add(2, 'days')).format();
-                    processSale(ordersToUpdate[i]._id, state, null);
+                    processSale(ordersToUpdate[i]._id, state, null, session);
                 } else {
                     break;
                 }
